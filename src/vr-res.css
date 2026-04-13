@@ -268,6 +268,7 @@
   min-width: 140px;
   flex: 1 1 140px;
   max-width: 180px;
+  position: relative;
 }
 .lv-stat:hover {
   border-color: var(--lv-border-accent);
@@ -363,6 +364,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: var(--lv-sp-lg);
+  perspective: 1200px;
+  position: relative;
 }
 
 .lv-module-card {
@@ -373,7 +376,7 @@
   transition: border-color 0.25s var(--lv-ease), box-shadow 0.25s var(--lv-ease);
   position: relative;
   overflow: hidden;
-  will-change: box-shadow;
+  will-change: box-shadow, transform;
 }
 /* Shimmer gradient accent — slides on hover (shimmer technique) */
 .lv-module-card::before {
@@ -509,6 +512,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: var(--lv-sp-lg);
+  perspective: 1200px;
 }
 
 .lv-arch-card {
@@ -1235,4 +1239,79 @@
   margin: 0 auto var(--lv-sp-xl);
   max-width: 200px;
   background: linear-gradient(90deg, transparent, var(--lv-accent-dim), transparent);
+}
+
+/* ══════════════════════════════════════════════════════════
+   FILM GRAIN NOISE — Premium texture overlay
+   Subtle SVG feTurbulence for depth (Vercel/Linear style).
+   ══════════════════════════════════════════════════════════ */
+.vr-res-root.landing-vchat-root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANIMATED GRADIENT BORDER — Stat badges
+   Conic-gradient sweep on hero stat cards (GitHub Copilot style).
+   ══════════════════════════════════════════════════════════ */
+@property --lv-border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.lv-stat::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--lv-radius);
+  padding: 1px;
+  background: conic-gradient(
+    from var(--lv-border-angle),
+    transparent 25%,
+    var(--lv-accent) 50%,
+    var(--lv-highlight) 75%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: lv-border-spin 4s linear infinite;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s var(--lv-ease);
+}
+
+.lv-stat:hover::after {
+  opacity: 0.8;
+}
+
+@keyframes lv-border-spin {
+  to { --lv-border-angle: 360deg; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   CURSOR SPOTLIGHT — Module grid
+   Radial gradient follows mouse on module card area (Tailwind UI style).
+   ══════════════════════════════════════════════════════════ */
+.lv-modules-grid::before {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99 102 241 / 0.06) 0%, transparent 70%);
+  left: var(--lv-spotlight-x, -9999px);
+  top: var(--lv-spotlight-y, -9999px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s var(--lv-ease);
 }

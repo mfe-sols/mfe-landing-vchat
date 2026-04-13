@@ -30,6 +30,7 @@ function useGsapMotion() {
     const root = rootRef.current;
     if (!root) return;
 
+    const cleanups: (() => void)[] = [];
     const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
       mm.add("(prefers-reduced-motion: reduce)", () => {
@@ -58,7 +59,25 @@ function useGsapMotion() {
           .from(".lv-stat", {
             opacity: 0, y: 22, scale: 0.9, duration: 0.5,
             stagger: 0.06, ease: "back.out(1.7)",
-          }, "-=0.3");
+          }, "-=0.3")
+          .addLabel("statsIn");
+
+        /* ── Stat count-up — numbers climb from zero ── */
+        root.querySelectorAll<HTMLElement>(".lv-stat__value").forEach((el) => {
+          const raw = (el.textContent || "").replace(/,/g, "");
+          const target = parseInt(raw, 10);
+          if (isNaN(target)) return;
+          el.textContent = "0";
+          const obj = { val: 0 };
+          heroTl.to(obj, {
+            val: target,
+            duration: 1.6,
+            ease: "power2.out",
+            onUpdate: () => {
+              el.textContent = Math.round(obj.val).toLocaleString();
+            },
+          }, "statsIn-=0.3");
+        });
 
         /* ── Parallax hero glow layer ──────────────── */
         gsap.to(".lv-hero::before", {
@@ -277,10 +296,50 @@ function useGsapMotion() {
             once: true,
           },
         );
+
+        /* ── Card 3D tilt on hover ──────────────────── */
+        root.querySelectorAll<HTMLElement>(".lv-module-card, .lv-arch-card").forEach((card) => {
+          const onMove = (e: MouseEvent) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            gsap.to(card, { rotateY: x * 6, rotateX: -y * 6, duration: 0.4, ease: "power2.out", overwrite: true });
+          };
+          const onLeave = () => {
+            gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.6, ease: "elastic.out(1, 0.5)", overwrite: true });
+          };
+          card.addEventListener("mousemove", onMove);
+          card.addEventListener("mouseleave", onLeave);
+          cleanups.push(() => {
+            card.removeEventListener("mousemove", onMove);
+            card.removeEventListener("mouseleave", onLeave);
+          });
+        });
+
+        /* ── Cursor spotlight on module grid ───────── */
+        const grid = root.querySelector<HTMLElement>(".lv-modules-grid");
+        if (grid) {
+          const onGridMove = (e: MouseEvent) => {
+            const rect = grid.getBoundingClientRect();
+            grid.style.setProperty("--lv-spotlight-x", `${e.clientX - rect.left}px`);
+            grid.style.setProperty("--lv-spotlight-y", `${e.clientY - rect.top}px`);
+          };
+          const onGridLeave = () => {
+            grid.style.setProperty("--lv-spotlight-x", "-9999px");
+            grid.style.setProperty("--lv-spotlight-y", "-9999px");
+          };
+          grid.addEventListener("mousemove", onGridMove, { passive: true });
+          grid.addEventListener("mouseleave", onGridLeave);
+          cleanups.push(() => {
+            grid.removeEventListener("mousemove", onGridMove);
+            grid.removeEventListener("mouseleave", onGridLeave);
+          });
+        }
       });
     }, root);
 
     return () => {
+      cleanups.forEach((fn) => fn());
       ctx.revert();
       mm.revert();
     };

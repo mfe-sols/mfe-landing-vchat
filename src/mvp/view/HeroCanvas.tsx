@@ -126,6 +126,8 @@ export function HeroCanvas() {
     /* ── State ────────────────────────────────────── */
     let scrollProgress = 0;
     let animId = 0;
+    let mouseX = 0;
+    let mouseY = 0;
     let width = container.clientWidth;
     let height = container.clientHeight;
 
@@ -143,6 +145,11 @@ export function HeroCanvas() {
       if (!heroEl) return;
       const rect = heroEl.getBoundingClientRect();
       scrollProgress = Math.max(0, Math.min(1, -rect.top / rect.height));
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     };
 
     /* ── Animation loop ───────────────────────────── */
@@ -203,9 +210,9 @@ export function HeroCanvas() {
       lp.needsUpdate = true;
       lc.needsUpdate = true;
 
-      /* Camera gentle orbit */
-      camera.position.x = Math.sin(t * 0.15) * 1.5;
-      camera.position.y = Math.cos(t * 0.12) * 1.0;
+      /* Camera gentle orbit + mouse parallax */
+      camera.position.x = Math.sin(t * 0.15) * 1.5 + mouseX * 0.8;
+      camera.position.y = Math.cos(t * 0.12) * 1.0 - mouseY * 0.6;
       camera.lookAt(0, 0, 0);
 
       /* Scroll dissolve — push particles outward + fade */
@@ -221,11 +228,13 @@ export function HeroCanvas() {
     animate();
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mousemove", onMouseMove);
       renderer.dispose();
       particleGeom.dispose();
       particleMat.dispose();
