@@ -31,6 +31,7 @@ module.exports = (webpackConfigEnv, argv) => {
     "react-dom/client",
     "gsap",
     "gsap/ScrollTrigger",
+    "gsap/ScrollToPlugin",
     "three",
   ]);
   const customExternals = ({ context, request }, callback) => {

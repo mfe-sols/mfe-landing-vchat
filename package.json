@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "VChat landing page microfrontend module (React + single-spa)",
   "private": true,
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "postinstall": "node sync-ui-kit-css.js",
     "sync-css": "node sync-ui-kit-css.js",
@@ -29,7 +29,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "single-spa": "^5.9.3",
-    "single-spa-react": "^6.0.2"
+    "single-spa-react": "^6.0.2",
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "@babel/core": "^7.23.3",
