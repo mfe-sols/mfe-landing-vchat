@@ -94,12 +94,14 @@
     #standalone-root { min-height: 100vh; }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/systemjs@6.15.1/dist/system.min.js"></script>
-  <script type="systemjs-importmap">
-    {
-      "imports": {
-        "@org/mfe-landing-vchat": "/org-mfe-landing-vchat.js"
-      }
-    }
+  <script>
+    // Cache-busting: append build timestamp so browsers always fetch the latest bundle
+    var __buildTs = new Date().getTime();
+    var importMap = { imports: { "@org/mfe-landing-vchat": "/org-mfe-landing-vchat.js?v=" + __buildTs } };
+    var s = document.createElement('script');
+    s.type = 'systemjs-importmap';
+    s.textContent = JSON.stringify(importMap);
+    document.currentScript.after(s);
   </script>
 </head>
 <body>
