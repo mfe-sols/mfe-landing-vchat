@@ -52,5 +52,8 @@
     "type": "git",
     "url": "https://github.com/mfe-sols/mfe-orchestra.git"
   },
+  "engines": {
+    "node": "20.x"
+  },
   "license": "MIT"
 }
