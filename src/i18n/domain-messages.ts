@@ -4,10 +4,10 @@ const DOMAIN = "mfe.landingVchat";
 
 /* ── Vietnamese (default) — VChat Business Platform ────── */
 const vi: Record<string, string> = {
-  heroEyebrow: "Nền tảng quản lý doanh nghiệp toàn diện",
+  heroEyebrow: "Nền tảng doanh nghiệp tự chủ",
   heroTitle: "Một ứng dụng. Mọi phòng ban. Không cần cloud.",
   heroSub:
-    "VChat là nền tảng quản lý doanh nghiệp tự chủ, chạy hoàn toàn trên mạng nội bộ — POS, kế toán, nhân sự, kho hàng, chat nhóm và quản lý rủi ro trong một ứng dụng desktop gốc duy nhất với phí thuê bao bằng không.",
+    "POS · Kế toán · Nhân sự · Kho hàng · Chat nhóm · Quản lý rủi ro — tất cả trong một ứng dụng duy nhất, chạy trên mạng nội bộ. Không internet. Không phí thuê bao.",
   primaryCta: "Khám phá tính năng",
   secondaryCta: "Xem kiến trúc",
 
@@ -20,18 +20,18 @@ const vi: Record<string, string> = {
   statCloud: "Đám mây",
 
   /* — Overview */
-  overviewTitle: "Tổng quan sản phẩm",
+  overviewTitle: "Vì sao VChat?",
   overviewBody:
-    "VChat đóng gói toàn bộ hệ thống doanh nghiệp vào một ứng dụng duy nhất — không cần thuê máy chủ, không phí hàng tháng, không cần internet. Mọi tính năng chạy trực tiếp trên máy tính của bạn, đồng bộ giữa các thiết bị qua mạng nội bộ với mã hóa cấp quân sự.",
+    "Không máy chủ. Không phí hàng tháng. Không cần internet. Toàn bộ hệ thống chạy ngay trên máy tính của bạn — đồng bộ giữa các thiết bị qua mạng nội bộ, mã hóa cấp quân sự.",
   overviewTarget:
-    "Được xây dựng cho SME Việt Nam, nhà hàng, chuỗi bán lẻ, và mọi doanh nghiệp coi trọng chủ quyền dữ liệu.",
+    "Xây dựng cho SME Việt Nam — nhà hàng, chuỗi bán lẻ, và mọi doanh nghiệp coi trọng chủ quyền dữ liệu.",
 
   /* — Modules eyebrow + title */
-  modulesEyebrow: "Tất cả trong một nền tảng",
-  modulesTitle: "Sẵn sàng vận hành ngay",
+  modulesEyebrow: "Tất cả trong một",
+  modulesTitle: "Sẵn sàng vận hành — ngay lập tức",
 
   modPos: "🛍️ Bán hàng & Thu ngân",
-  modPosDesc: "Từ quán cà phê đến chuỗi bán lẻ — một màn hình xong giao dịch.",
+  modPosDesc: "Quán cà phê hay chuỗi bán lẻ — một màn hình, xong giao dịch.",
   posH1: "Danh mục sản phẩm với phân loại, mã SKU và hình ảnh",
   posH2: "Đa phương thức thanh toán (tiền mặt, thẻ, chuyển khoản, ví điện tử)",
   posH3: "Mở/đóng ca với đối chiếu tiền mặt",
@@ -45,7 +45,7 @@ const vi: Record<string, string> = {
   posH11: "Quản lý đa chi nhánh từ một giao diện",
 
   modAccounting: "📊 Kế toán & Tài chính",
-  modAccountingDesc: "Sổ sách chuẩn Việt Nam, sẵn xuất báo cáo thuế ngay.",
+  modAccountingDesc: "Sổ sách chuẩn Việt Nam — sẵn sàng xuất báo cáo thuế.",
   accH1: "Hệ thống tài khoản chuẩn TT99 / TT200 / TT133",
   accH2: "Bút toán nhật ký đa dòng",
   accH3: "Kỳ kế toán và khóa sổ cuối năm",
@@ -73,7 +73,7 @@ const vi: Record<string, string> = {
   hrH9: "Báo cáo nhân sự tổng hợp theo tháng",
 
   modInventory: "📦 Kho hàng & Cung ứng",
-  modInventoryDesc: "Biết chính xác tồn kho mọi lúc, cảnh báo trước khi hết hàng.",
+  modInventoryDesc: "Tồn kho chính xác mọi lúc — cảnh báo trước khi hết hàng.",
   invH1: "Dữ liệu nguyên vật liệu với phân loại",
   invH2: "Quản lý nhà cung cấp",
   invH3: "Hỗ trợ đa kho",
@@ -100,14 +100,14 @@ const vi: Record<string, string> = {
   chatH10: "Lịch sử trò chuyện được lưu trữ an toàn",
 
   modRisk: "🛡️ Quản lý rủi ro",
-  modRiskDesc: "Phát hiện sớm, cảnh báo ngay — bảo vệ doanh nghiệp chủ động.",
+  modRiskDesc: "Phát hiện sớm · cảnh báo ngay · bảo vệ chủ động.",
   riskH1: "Hệ thống quy tắc rủi ro có thể cấu hình",
   riskH2: "Theo dõi sự kiện rủi ro thời gian thực",
   riskH3: "Chấm điểm rủi ro theo danh mục",
   riskH4: "Báo cáo rủi ro tổng hợp theo kỳ",
 
   modAdmin: "⚙️ Quản trị hệ thống",
-  modAdminDesc: "Cấu hình, giám sát và kiểm soát toàn bộ từ một nơi.",
+  modAdminDesc: "Cấu hình · giám sát · kiểm soát — tất cả từ một nơi.",
   adminH1: "Ghép nối thiết bị VKiosk cho gọi món tablet",
   adminH2: "Giám sát tình trạng lưu trữ",
   adminH3: "Khả năng reset hệ thống",
@@ -131,10 +131,10 @@ const vi: Record<string, string> = {
 
   /* — Architecture */
   archEyebrow: "Kiến trúc hệ thống",
-  archTitle: "Kiến trúc nổi bật",
+  archTitle: "Được thiết kế để vận hành độc lập",
 
-  archLan: "Không đám mây, ưu tiên LAN",
-  archLanDesc: "Mỗi thiết bị là một ứng dụng đầy đủ. Không máy chủ trung tâm.",
+  archLan: "Không đám mây — ưu tiên LAN",
+  archLanDesc: "Mỗi thiết bị là hệ thống đầy đủ. Không máy chủ trung tâm.",
   archLanI1: "Không máy chủ trung tâm — mỗi thiết bị là hệ thống đầy đủ",
   archLanI2: "Tự động phát hiện thiết bị cùng mạng — không cần cấu hình",
   archLanI3: "Xác thực thiết bị an toàn, chống giả mạo",
@@ -152,7 +152,7 @@ const vi: Record<string, string> = {
 
   /* — Security */
   secEyebrow: "Phòng thủ nhiều lớp",
-  secTitle: "Bảo mật",
+  secTitle: "Bảo mật — không thỏa hiệp",
 
   secNetwork: "Bảo mật mạng",
   secNet1: "Mã hóa dữ liệu truyền tải — tự động, không cần cấu hình",
@@ -256,10 +256,10 @@ const vi: Record<string, string> = {
   depSaasExport: "📊 Giới hạn",
   depVchatExport: "📊 Toàn quyền sở hữu",
 
-  deployTagline: "Không phí định kỳ · Không phụ thuộc internet · Toàn quyền dữ liệu",
+  deployTagline: "Không phí định kỳ · Không phụ thuộc internet · Toàn quyền dữ liệu.",
 
   /* — Competitive */
-  compTitle: "Lợi thế cạnh tranh",
+  compTitle: "VChat so với giải pháp khác",
   compColFeature: "Tính năng",
   compColCloud: "POS đám mây",
   compColErp: "ERP doanh nghiệp",
@@ -302,8 +302,8 @@ const vi: Record<string, string> = {
   compWebrtc: "✅ WebRTC",
 
   /* — Ideal for */
-  idealEyebrow: "Khách hàng mục tiêu",
-  idealTitle: "Phù hợp với",
+  idealEyebrow: "Dành cho bạn",
+  idealTitle: "Ai nên dùng VChat?",
 
   idealRetail: "Cửa hàng bán lẻ",
   idealRetailDesc: "POS, kho hàng, tích điểm khách hàng",
@@ -326,7 +326,7 @@ const vi: Record<string, string> = {
   compl5: "Tiền VND với độ chính xác tới đơn vị đồng",
 
   complianceEyebrow: "Tuân thủ quy định",
-  complianceTitle: "Tuân thủ Việt Nam",
+  complianceTitle: "Sẵn sàng cho thị trường Việt Nam",
 
   /* — One-liners */
   olTagline: "Khẩu hiệu",
@@ -338,8 +338,35 @@ const vi: Record<string, string> = {
   olTech: "Kỹ thuật",
   olTechText: "Hơn 327.000 dòng nghiệp vụ. Một file duy nhất. Không phụ thuộc bên thứ ba. Đồng bộ nội bộ tức thì. Mã hóa toàn bộ dữ liệu.",
 
+  /* — Chapter dividers */
+  ch1Eyebrow: "VẤN ĐỀ",
+  ch1Title: "Dữ liệu của bạn — đang nằm trên server người khác",
+  ch1Sub: "Mất internet = ngừng kinh doanh. Phí SaaS tăng mỗi năm. Dữ liệu bị khóa trên cloud mà bạn không kiểm soát.",
+
+  ch2Eyebrow: "GIẢI PHÁP",
+  ch2Title: "Một ứng dụng — chạy ngay, không cần internet",
+  ch2Sub: "Tất cả gói gọn trong một file duy nhất. Cài đặt trong vài phút. Vận hành ngay trên máy tính của bạn.",
+
+  ch3Eyebrow: "TẠI SAO ĐÁNG TIN",
+  ch3Title: "Kiến trúc enterprise — bảo mật không thỏa hiệp",
+  ch3Sub: "Hệ thống thật. 327.000+ dòng code. Mã hóa AES-256. Tuân thủ chuẩn kế toán Việt Nam.",
+
+  ch4Eyebrow: "SO SÁNH",
+  ch4Title: "VChat khác biệt — ở mọi khía cạnh",
+  ch4Sub: "SaaS tính phí hàng tháng, yêu cầu internet, giữ dữ liệu. VChat — ngược lại hoàn toàn.",
+
+  ch5Eyebrow: "BẮT ĐẦU NGAY",
+  ch5Title: "Doanh nghiệp của bạn — sẵn sàng chưa?",
+  ch5Sub: "Từ cửa hàng nhỏ đến chuỗi bán lẻ. Từ nhà hàng đến văn phòng SME. VChat phù hợp với tất cả.",
+
+  /* — CTA section */
+  ctaTitle: "Sẵn sàng làm chủ — doanh nghiệp của bạn?",
+  ctaSub: "Liên hệ ngay. Tư vấn miễn phí. Cài đặt trong vài phút — vận hành mọi phòng ban, không phí hàng tháng, không cần internet.",
+  ctaPrimary: "Liên hệ tư vấn",
+  ctaSecondary: "Xem demo trực tiếp",
+
   /* — Footer */
-  footerTagline: "VChat — Toàn bộ doanh nghiệp trong một ứng dụng.",
+  footerTagline: "VChat — toàn bộ doanh nghiệp, một ứng dụng duy nhất.",
   footerTech: "",
 
   /* — Table column headers (tech) */
@@ -354,10 +381,10 @@ const vi: Record<string, string> = {
 
 /* ── English ─────────────────────────────────────────────── */
 const en: Record<string, string> = {
-  heroEyebrow: "All-in-one business management platform",
+  heroEyebrow: "Self-sovereign business platform",
   heroTitle: "One App. Every Department. No Cloud Required.",
   heroSub:
-    "VChat is a self-contained business management platform that runs entirely on your local network — POS, accounting, HR, inventory, team chat, and risk management in a single native desktop application with zero subscription fees.",
+    "POS · Accounting · HR · Inventory · Team Chat · Risk Management — all in one app, running on your local network. No internet. No subscription.",
   primaryCta: "Explore Features",
   secondaryCta: "View Architecture",
 
@@ -368,14 +395,14 @@ const en: Record<string, string> = {
   statCode: "Lines of Code",
   statCloud: "Cloud",
 
-  overviewTitle: "Product Overview",
+  overviewTitle: "Why VChat?",
   overviewBody:
-    "VChat packs an entire enterprise suite into a single binary — no server racks, no monthly SaaS bills, no internet required. Every feature runs natively on macOS, Windows, and Linux, syncing across devices over your local network with military-grade encryption.",
+    "No servers. No monthly fees. No internet required. Your entire system runs on your own machine — syncing across devices over LAN with military-grade encryption.",
   overviewTarget:
-    "Built for Vietnamese SMEs, restaurants, retail chains, and any business that values data sovereignty.",
+    "Built for Vietnamese SMEs — restaurants, retail chains, and any business that values data sovereignty.",
 
-  modulesEyebrow: "9 integrated modules",
-  modulesTitle: "Core Modules",
+  modulesEyebrow: "All in one",
+  modulesTitle: "Ready to run — right now",
 
   modPos: "Point of Sale (POS)",
   modPosDesc: "Full-featured retail and F&B sales system.",
@@ -461,7 +488,7 @@ const en: Record<string, string> = {
   adminH4: "Demo data seeding",
 
   archEyebrow: "System Architecture",
-  archTitle: "Architecture Highlights",
+  archTitle: "Built for independent operation",
 
   archLan: "Zero-Cloud, LAN-First",
   archLanDesc: "Every device is a full-stack application. No central server.",
@@ -481,7 +508,7 @@ const en: Record<string, string> = {
   archBinI5: "Install: single .app bundle or .exe",
 
   secEyebrow: "Defense-in-Depth",
-  secTitle: "Security",
+  secTitle: "Security — no compromise",
 
   secNetwork: "Network Security",
   secNet1: "TLS auto-provisioned — ECDSA P-256, auto-renewed 2 years",
@@ -581,9 +608,9 @@ const en: Record<string, string> = {
   depSaasExport: "📊 Limited",
   depVchatExport: "📊 Full data ownership",
 
-  deployTagline: "Zero recurring costs · Zero internet dependency · Full data sovereignty",
+  deployTagline: "Zero recurring costs · Zero internet dependency · Full data sovereignty.",
 
-  compTitle: "Competitive Edge",
+  compTitle: "VChat vs. the alternatives",
   compColFeature: "Feature",
   compColCloud: "Cloud POS",
   compColErp: "Enterprise ERP",
@@ -625,8 +652,8 @@ const en: Record<string, string> = {
   compSeparate: "❌ Separate tool",
   compWebrtc: "✅ WebRTC",
 
-  idealEyebrow: "Target Customers",
-  idealTitle: "Ideal For",
+  idealEyebrow: "For you",
+  idealTitle: "Who should use VChat?",
 
   idealRetail: "Retail Stores",
   idealRetailDesc: "POS, inventory, customer loyalty",
@@ -648,7 +675,7 @@ const en: Record<string, string> = {
   compl5: "VND currency with đồng-level precision (int64)",
 
   complianceEyebrow: "Regulatory Compliance",
-  complianceTitle: "Vietnamese Compliance",
+  complianceTitle: "Ready for the Vietnamese market",
 
   olTagline: "Tagline",
   olTaglineText: "Your entire business in one app. No cloud. No subscription. No compromise.",
@@ -659,7 +686,32 @@ const en: Record<string, string> = {
   olTech: "Technical",
   olTechText: "327K lines of Go + TypeScript. Single binary. Pure stdlib. SQLite WAL. P2P LAN sync. AES-256 at rest.",
 
-  footerTagline: "VChat — Your entire business in one application.",
+  ch1Eyebrow: "THE PROBLEM",
+  ch1Title: "Your data — sitting on someone else’s server",
+  ch1Sub: "Lose internet = lose business. SaaS fees rise every year. Your data is locked in a cloud you don’t control.",
+
+  ch2Eyebrow: "THE SOLUTION",
+  ch2Title: "One app — runs instantly, no internet needed",
+  ch2Sub: "Everything packed into a single file. Install in minutes. Run directly on your machine.",
+
+  ch3Eyebrow: "WHY TRUST US",
+  ch3Title: "Enterprise architecture — uncompromising security",
+  ch3Sub: "A real system. 327,000+ lines of code. AES-256 encryption. Vietnamese accounting compliance.",
+
+  ch4Eyebrow: "COMPARE",
+  ch4Title: "VChat is different — in every way",
+  ch4Sub: "SaaS charges monthly, requires internet, holds your data. VChat — the complete opposite.",
+
+  ch5Eyebrow: "GET STARTED",
+  ch5Title: "Your business — ready?",
+  ch5Sub: "From small shops to retail chains. From restaurants to SME offices. VChat fits them all.",
+
+  ctaTitle: "Ready to take control — of your business?",
+  ctaSub: "Get in touch. Free consultation. Set up in minutes — run every department, no monthly fees, no internet required.",
+  ctaPrimary: "Contact Us",
+  ctaSecondary: "Watch Live Demo",
+
+  footerTagline: "VChat — your entire business, one app.",
   footerTech: "Go 1.25 · React 19 · SQLite WAL · P2P LAN · AES-256",
 
   techColLayer: "Layer",

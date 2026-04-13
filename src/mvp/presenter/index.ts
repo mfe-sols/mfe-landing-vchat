@@ -43,6 +43,13 @@ export type LandingViewModel = {
   secondaryCta: string;
   heroStats: StatVM[];
 
+  /* Chapter dividers */
+  ch1Eyebrow: string; ch1Title: string; ch1Sub: string;
+  ch2Eyebrow: string; ch2Title: string; ch2Sub: string;
+  ch3Eyebrow: string; ch3Title: string; ch3Sub: string;
+  ch4Eyebrow: string; ch4Title: string; ch4Sub: string;
+  ch5Eyebrow: string; ch5Title: string; ch5Sub: string;
+
   overviewTitle: string;
   overviewBody: string;
   overviewTarget: string;
@@ -96,6 +103,12 @@ export type LandingViewModel = {
 
   oneLiners: OneLinerVM[];
 
+  /* CTA */
+  ctaTitle: string;
+  ctaSub: string;
+  ctaPrimary: string;
+  ctaSecondary: string;
+
   footerTagline: string;
   footerTech: string;
 };
@@ -107,6 +120,12 @@ export const createPresenter = (m: LandingModel): LandingViewModel => ({
   primaryCta: tr("primaryCta"),
   secondaryCta: tr("secondaryCta"),
   heroStats: m.heroStats.map((s) => ({ label: tr(s.labelKey), value: s.value })),
+
+  ch1Eyebrow: tr("ch1Eyebrow"), ch1Title: tr("ch1Title"), ch1Sub: tr("ch1Sub"),
+  ch2Eyebrow: tr("ch2Eyebrow"), ch2Title: tr("ch2Title"), ch2Sub: tr("ch2Sub"),
+  ch3Eyebrow: tr("ch3Eyebrow"), ch3Title: tr("ch3Title"), ch3Sub: tr("ch3Sub"),
+  ch4Eyebrow: tr("ch4Eyebrow"), ch4Title: tr("ch4Title"), ch4Sub: tr("ch4Sub"),
+  ch5Eyebrow: tr("ch5Eyebrow"), ch5Title: tr("ch5Title"), ch5Sub: tr("ch5Sub"),
 
   overviewTitle: tr("overviewTitle"),
   overviewBody: tr("overviewBody"),
@@ -198,6 +217,11 @@ export const createPresenter = (m: LandingModel): LandingViewModel => ({
     label: tr(o.labelKey),
     text: tr(o.textKey),
   })),
+
+  ctaTitle: tr("ctaTitle"),
+  ctaSub: tr("ctaSub"),
+  ctaPrimary: tr("ctaPrimary"),
+  ctaSecondary: tr("ctaSecondary"),
 
   footerTagline: tr("footerTagline"),
   footerTech: tr("footerTech"),

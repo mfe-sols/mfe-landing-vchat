@@ -355,6 +355,27 @@ const Connector = () => (
   </div>
 );
 
+/* ── Chapter divider — storytelling section separator ── */
+const ChapterDivider = ({
+  num,
+  eyebrow,
+  title,
+  sub,
+}: {
+  num: number;
+  eyebrow: string;
+  title: string;
+  sub: string;
+}) => (
+  <div className="lv-chapter lv-gsap" aria-hidden="true">
+    <span className="lv-chapter__num">{`0${num}`}</span>
+    <p className="lv-chapter__eyebrow">{eyebrow}</p>
+    <h2 className="lv-chapter__title">{title}</h2>
+    <p className="lv-chapter__sub">{sub}</p>
+    <div className="lv-chapter__line" />
+  </div>
+);
+
 /* ── Section helper ───────────────────────────────────── */
 const Section = ({
   id,
@@ -436,9 +457,11 @@ export function AppShell({ locale }: { locale?: string }) {
         </div>
       </header>
 
-      <Connector />
+      {/* ═══════════════════════════════════════════════
+          CHAPTER 1 — ĐÁNH THỨC NỖI ĐAU
+          ═══════════════════════════════════════════════ */}
+      <ChapterDivider num={1} eyebrow={vm.ch1Eyebrow} title={vm.ch1Title} sub={vm.ch1Sub} />
 
-      {/* ── TỔNG QUAN SẢN PHẨM ──────────────────────── */}
       <Section id="overview" title={vm.overviewTitle}>
         <p className="lv-overview__body">{vm.overviewBody}</p>
         <p className="lv-overview__target">{vm.overviewTarget}</p>
@@ -446,7 +469,11 @@ export function AppShell({ locale }: { locale?: string }) {
 
       <Connector />
 
-      {/* ── MODULE CỐT LÕI ──────────────────────────── */}
+      {/* ═══════════════════════════════════════════════
+          CHAPTER 2 — GIẢI PHÁP MỘT CHẠM
+          ═══════════════════════════════════════════════ */}
+      <ChapterDivider num={2} eyebrow={vm.ch2Eyebrow} title={vm.ch2Title} sub={vm.ch2Sub} />
+
       <Section
         id="modules"
         eyebrow={vm.modulesEyebrow}
@@ -472,7 +499,12 @@ export function AppShell({ locale }: { locale?: string }) {
 
       <Connector />
 
-      {/* ── KIẾN TRÚC NỔI BẬT ───────────────────────── */}
+      {/* ═══════════════════════════════════════════════
+          CHAPTER 3 — TẠI SAO ĐÁNG TIN
+          Architecture + Security + Compliance
+          ═══════════════════════════════════════════════ */}
+      <ChapterDivider num={3} eyebrow={vm.ch3Eyebrow} title={vm.ch3Title} sub={vm.ch3Sub} />
+
       <Section
         id="architecture"
         eyebrow={vm.archEyebrow}
@@ -496,7 +528,6 @@ export function AppShell({ locale }: { locale?: string }) {
 
       <Connector />
 
-      {/* ── BẢO MẬT ─────────────────────────────────── */}
       <Section id="security" eyebrow={vm.secEyebrow} title={vm.secTitle}>
         <div className="lv-sec-grid lv-gsap-batch">
           {vm.secLayers.map((layer) => (
@@ -512,7 +543,28 @@ export function AppShell({ locale }: { locale?: string }) {
         </div>
       </Section>
 
-      {/* ── MÔ HÌNH TRIỂN KHAI ──────────────────────── */}
+      <Connector />
+
+      <Section
+        id="compliance"
+        eyebrow={vm.complianceEyebrow}
+        title={vm.complianceTitle}
+      >
+        <ul className="lv-compliance-list">
+          {vm.compliance.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </Section>
+
+      <Connector />
+
+      {/* ═══════════════════════════════════════════════
+          CHAPTER 4 — SO SÁNH THUYẾT PHỤC
+          Deploy + Competitive + Platforms
+          ═══════════════════════════════════════════════ */}
+      <ChapterDivider num={4} eyebrow={vm.ch4Eyebrow} title={vm.ch4Title} sub={vm.ch4Sub} />
+
       <Section
         id="deployment"
         eyebrow={vm.deployEyebrow}
@@ -537,7 +589,8 @@ export function AppShell({ locale }: { locale?: string }) {
         <p className="lv-deploy-model__tagline">{vm.deployTagline}</p>
       </Section>
 
-      {/* ── LỢI THẾ CẠNH TRANH ──────────────────────── */}
+      <Connector />
+
       <Section id="competitive" title={vm.compTitle}>
         <div className="lv-table-wrap">
           <table className="lv-table lv-table--comp">
@@ -563,22 +616,8 @@ export function AppShell({ locale }: { locale?: string }) {
         </div>
       </Section>
 
-      {/* ── DÀNH CHO ────────────────────────────────── */}
-      <Section id="ideal" eyebrow={vm.idealEyebrow} title={vm.idealTitle}>
-        <div className="lv-ideal-grid lv-gsap-batch">
-          {vm.idealSegments.map((seg) => (
-            <article key={seg.title} className="lv-ideal-card lv-gsap-card">
-              <span className="lv-ideal-card__icon">{seg.icon}</span>
-              <div>
-                <h3 className="lv-ideal-card__title">{seg.title}</h3>
-                <p className="lv-ideal-card__desc">{seg.desc}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
+      <Connector />
 
-      {/* ── ĐA NỀN TẢNG ────────────────────────────── */}
       <Section id="platforms" title={vm.platformTitle}>
         <div className="lv-table-wrap">
           <table className="lv-table">
@@ -602,28 +641,42 @@ export function AppShell({ locale }: { locale?: string }) {
         </div>
       </Section>
 
-      {/* ── TUÂN THỦ VIỆT NAM ───────────────────────── */}
-      <Section
-        id="compliance"
-        eyebrow={vm.complianceEyebrow}
-        title={vm.complianceTitle}
-      >
-        <ul className="lv-compliance-list">
-          {vm.compliance.map((item) => (
-            <li key={item}>{item}</li>
+      <Connector />
+
+      {/* ═══════════════════════════════════════════════
+          CHAPTER 5 — HÀNH ĐỘNG
+          Ideal For + CTA + Footer
+          ═══════════════════════════════════════════════ */}
+      <ChapterDivider num={5} eyebrow={vm.ch5Eyebrow} title={vm.ch5Title} sub={vm.ch5Sub} />
+
+      <Section id="ideal" eyebrow={vm.idealEyebrow} title={vm.idealTitle}>
+        <div className="lv-ideal-grid lv-gsap-batch">
+          {vm.idealSegments.map((seg) => (
+            <article key={seg.title} className="lv-ideal-card lv-gsap-card">
+              <span className="lv-ideal-card__icon">{seg.icon}</span>
+              <div>
+                <h3 className="lv-ideal-card__title">{seg.title}</h3>
+                <p className="lv-ideal-card__desc">{seg.desc}</p>
+              </div>
+            </article>
           ))}
-        </ul>
+        </div>
       </Section>
 
-      {/* ── MÔ TẢ NGẮN ─────────────────────────────── */}
-      <Section id="one-liners" className="lv-oneliners" ariaLabel="Mô tả ngắn">
-        {vm.oneLiners.map((o) => (
-          <blockquote key={o.label} className="lv-oneliner">
-            <cite className="lv-oneliner__label">{o.label}</cite>
-            <p className="lv-oneliner__text">{o.text}</p>
-          </blockquote>
-        ))}
-      </Section>
+      {/* ── CTA — Final conversion ──────────────────── */}
+      <section className="lv-cta lv-gsap" aria-label={vm.ctaTitle}>
+        <div className="lv-cta__glow" aria-hidden="true" />
+        <h2 className="lv-cta__title">{vm.ctaTitle}</h2>
+        <p className="lv-cta__sub">{vm.ctaSub}</p>
+        <div className="lv-cta__actions">
+          <a href="#" className="lv-btn lv-btn--primary lv-btn--lg lv-btn--glow">
+            {vm.ctaPrimary}
+          </a>
+          <a href="#" className="lv-btn lv-btn--ghost lv-btn--lg">
+            {vm.ctaSecondary}
+          </a>
+        </div>
+      </section>
 
       {/* ── FOOTER ──────────────────────────────────── */}
       <footer className="lv-footer">
