@@ -16,7 +16,8 @@
     {
       "source": "/org-mfe-landing-vchat.js",
       "headers": [
-        { "key": "Cache-Control", "value": "public, no-cache" },
+        { "key": "Cache-Control", "value": "public, no-cache, must-revalidate, s-maxage=0" },
+        { "key": "CDN-Cache-Control", "value": "no-store" },
         { "key": "Content-Type", "value": "application/javascript; charset=utf-8" }
       ]
     },
@@ -26,7 +27,17 @@
     },
     {
       "source": "/(.*)\\.css",
-      "headers": [{ "key": "Cache-Control", "value": "public, no-cache" }]
+      "headers": [
+        { "key": "Cache-Control", "value": "public, no-cache, must-revalidate, s-maxage=0" },
+        { "key": "CDN-Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, no-cache, must-revalidate, s-maxage=0" },
+        { "key": "CDN-Cache-Control", "value": "no-store" }
+      ]
     }
   ]
 }
