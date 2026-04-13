@@ -1,7 +1,7 @@
 {
-  "buildCommand": "pnpm run build:webpack",
+  "buildCommand": "npx pnpm@9 run build:webpack",
   "outputDirectory": "dist",
-  "installCommand": "pnpm install --no-frozen-lockfile",
+  "installCommand": "npx pnpm@9 install --no-frozen-lockfile",
   "headers": [
     {
       "source": "/(.*)",
