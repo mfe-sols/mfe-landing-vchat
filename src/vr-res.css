@@ -1,0 +1,1238 @@
+/* ──────────────────────────────────────────────────────────
+   VChat Landing — "System Architecture Premium"
+   ─────────────────────────────────────────────────────────
+   Art direction:
+     - Enterprise trust (disciplined typography, spacing, hierarchy)
+     - System architecture storytelling (topology accents, node motifs)
+     - Premium atmosphere (controlled depth, selective glow, restrained gradients)
+   Motion (Animation Dictionary techniques applied):
+     - GSAP timeline sequence — hero cascade, scrub-linked connectors
+     - Stagger orchestration — cards, table rows, metrics, compliance
+     - Clip-path wipe — hero title reveal
+     - Spring physics (back.out) — metrics, stat badges, icons
+     - Parallax — hero glow layer depth
+     - Shimmer gradient — card hover accent
+     - Alternating reveals — deploy model rows
+     - Attention-seeking pulse — connector nodes
+     - Scale bounce — ideal-for icons
+     - prefers-reduced-motion a11y — all motion disabled
+   ────────────────────────────────────────────────────────── */
+
+/* ── Design Tokens ────────────────────────────────────── */
+.vr-res-root.landing-vchat-root {
+  /* — Background system */
+  --lv-bg-deep:    #060a14;
+  --lv-bg:         #0b1020;
+  --lv-bg-raised:  #111827;
+  --lv-bg-card:    rgba(255 255 255 / 0.025);
+
+  /* — Border system */
+  --lv-border:       rgba(255 255 255 / 0.06);
+  --lv-border-hover: rgba(255 255 255 / 0.14);
+  --lv-border-accent: rgba(99 102 241 / 0.25);
+
+  /* — Text system (4 tiers) */
+  --lv-text-primary:   #f1f3f9;
+  --lv-text-secondary: #c4c9d9;
+  --lv-text-tertiary:  #8790a8;
+  --lv-text-quaternary:#5c6478;
+
+  /* — Color system */
+  --lv-accent:      #6366f1;          /* indigo-500 — primary accent */
+  --lv-accent-dim:  rgba(99 102 241 / 0.12);
+  --lv-highlight:   #22d3ee;          /* cyan-400 — data emphasis */
+  --lv-highlight-dim: rgba(34 211 238 / 0.10);
+  --lv-success:     #34d399;          /* emerald-400 — positive indicators */
+  --lv-danger:      #f87171;          /* red-400 — negative indicators */
+
+  /* — Spacing rhythm (8px base) */
+  --lv-sp-xs: 4px;
+  --lv-sp-sm: 8px;
+  --lv-sp-md: 16px;
+  --lv-sp-lg: 24px;
+  --lv-sp-xl: 32px;
+  --lv-sp-2xl: 48px;
+  --lv-sp-3xl: 64px;
+  --lv-sp-4xl: 96px;
+
+  /* — Type scale (major third @ 16px base) */
+  --lv-fs-xs:  0.694rem;  /* 11.1px */
+  --lv-fs-sm:  0.833rem;  /* 13.3px */
+  --lv-fs-base: 1rem;     /* 16px   */
+  --lv-fs-md:  1.125rem;  /* 18px   */
+  --lv-fs-lg:  1.25rem;   /* 20px   */
+  --lv-fs-xl:  1.563rem;  /* 25px   */
+  --lv-fs-2xl: 1.953rem;  /* 31.3px */
+  --lv-fs-3xl: 2.441rem;  /* 39px   */
+  --lv-fs-hero: clamp(2.2rem, 5vw, 3.4rem);
+
+  /* — Surface */
+  --lv-radius-sm:  6px;
+  --lv-radius:     10px;
+  --lv-radius-lg:  14px;
+  --lv-max-w:      1160px;
+
+  /* — Transitions */
+  --lv-ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --lv-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  background: var(--lv-bg);
+  color: var(--lv-text-secondary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ── Global Layout ────────────────────────────────────── */
+.landing-vchat {
+  max-width: var(--lv-max-w);
+  margin: 0 auto;
+  padding: 0 var(--lv-sp-lg);
+}
+
+/* ── Section rhythm ───────────────────────────────────── */
+.lv-section {
+  padding: var(--lv-sp-4xl) 0 var(--lv-sp-3xl);
+  border-bottom: 1px solid var(--lv-border);
+  position: relative;
+}
+.lv-section:last-of-type { border-bottom: none; }
+
+.lv-eyebrow {
+  font-size: var(--lv-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lv-accent);
+  margin: 0 0 var(--lv-sp-sm);
+}
+
+.lv-section-title {
+  font-size: var(--lv-fs-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 var(--lv-sp-xl);
+  color: var(--lv-text-primary);
+}
+
+/* ── Scroll-reveal: GSAP handles all reveal animations ── */
+
+/* ══════════════════════════════════════════════════════════
+   HERO
+   Purpose: Instant credibility. "Powerful, premium, independent."
+   Graphic: Controlled radial glow — architecture ambience only.
+          NO blobs, NO particles, NO 3D objects.
+   ══════════════════════════════════════════════════════════ */
+.lv-hero {
+  text-align: center;
+  padding: var(--lv-sp-4xl) 0 var(--lv-sp-3xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle topology-grid background accent */
+.lv-hero::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 15%, rgba(99 102 241 / 0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 35% at 75% 25%, rgba(34 211 238 / 0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 40% at 25% 60%, rgba(99 102 241 / 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: lv-hero-breathe 12s ease-in-out infinite alternate;
+}
+
+@keyframes lv-hero-breathe {
+  0%   { opacity: 0.7; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.03); }
+}
+
+.lv-hero > * { position: relative; z-index: 1; }
+
+/* ── Three.js Hero Canvas — full-bleed behind content ── */
+.lv-hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.lv-hero-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.lv-hero__eyebrow {
+  font-size: var(--lv-fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lv-accent);
+  margin: 0 0 var(--lv-sp-md);
+}
+
+.lv-hero__title {
+  font-size: var(--lv-fs-hero);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--lv-text-primary);
+  margin: 0 0 var(--lv-sp-lg);
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.lv-hero__sub {
+  font-size: var(--lv-fs-md);
+  color: var(--lv-text-tertiary);
+  max-width: 620px;
+  margin: 0 auto var(--lv-sp-xl);
+  line-height: 1.75;
+}
+
+.lv-hero__ctas {
+  display: flex;
+  gap: var(--lv-sp-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--lv-sp-2xl);
+}
+
+.lv-hero__stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--lv-sp-lg);
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+.lv-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--lv-fs-sm);
+  font-weight: 600;
+  padding: 13px 30px;
+  border-radius: var(--lv-radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--lv-ease);
+  letter-spacing: 0.01em;
+}
+
+.lv-btn--primary {
+  background: var(--lv-accent);
+  color: #fff;
+  box-shadow: 0 1px 3px rgba(99 102 241 / 0.25);
+}
+.lv-btn--primary:hover {
+  background: #4f46e5;
+  box-shadow: 0 4px 20px rgba(99 102 241 / 0.35);
+  transform: translateY(-1px);
+}
+
+.lv-btn--ghost {
+  background: transparent;
+  color: var(--lv-text-secondary);
+  border: 1px solid var(--lv-border);
+}
+.lv-btn--ghost:hover {
+  border-color: var(--lv-border-hover);
+  background: rgba(255 255 255 / 0.03);
+  transform: translateY(-1px);
+}
+
+.lv-btn--lg {
+  font-size: var(--lv-fs-base);
+  padding: 16px 44px;
+}
+
+/* ── Stat badges (hero) ───────────────────────────────── */
+.lv-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lv-sp-xs);
+  padding: var(--lv-sp-md) var(--lv-sp-lg);
+  border-radius: var(--lv-radius);
+  background: var(--lv-bg-card);
+  border: 1px solid var(--lv-border);
+  transition: border-color 0.3s var(--lv-ease), box-shadow 0.3s var(--lv-ease);
+  min-width: 140px;
+  flex: 1 1 140px;
+  max-width: 180px;
+}
+.lv-stat:hover {
+  border-color: var(--lv-border-accent);
+  box-shadow: 0 0 20px rgba(99 102 241 / 0.12);
+  transform: translateY(-2px);
+}
+
+.lv-stat__value {
+  font-size: var(--lv-fs-xl);
+  font-weight: 800;
+  color: var(--lv-highlight);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lv-stat__label {
+  font-size: var(--lv-fs-xs);
+  color: var(--lv-text-quaternary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════
+   PRODUCT OVERVIEW
+   Purpose: Context + positioning. Set the commercial framing.
+   Graphic: Floating gradient orb behind text.
+   ══════════════════════════════════════════════════════════ */
+#overview {
+  position: relative;
+  overflow: hidden;
+  --lv-parallax-y: 0px;
+}
+#overview::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  top: -60px;
+  right: -120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99 102 241 / 0.07) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: lv-overview-float 8s ease-in-out infinite alternate;
+  transform: translateY(var(--lv-parallax-y));
+}
+#overview::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  bottom: -80px;
+  left: -100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34 211 238 / 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: lv-overview-float 10s ease-in-out infinite alternate-reverse;
+  transform: translateY(calc(var(--lv-parallax-y) * -0.5));
+}
+#overview > * { position: relative; z-index: 1; }
+
+@keyframes lv-overview-float {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-15px, 12px) scale(1.08); }
+}
+
+.lv-overview__body {
+  font-size: var(--lv-fs-md);
+  color: var(--lv-text-tertiary);
+  max-width: 760px;
+  line-height: 1.8;
+  margin: 0 0 var(--lv-sp-md);
+}
+
+.lv-overview__target {
+  font-size: var(--lv-fs-base);
+  color: var(--lv-accent);
+  font-weight: 600;
+  font-style: italic;
+  max-width: 760px;
+  padding-left: var(--lv-sp-md);
+  border-left: 3px solid var(--lv-accent-dim);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CORE MODULES — Card-based modular composition
+   Purpose: Prove comprehensiveness. "9 modules, real depth."
+   Motion: Staggered card entrance. Hover depth shift.
+   ══════════════════════════════════════════════════════════ */
+.lv-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--lv-sp-lg);
+}
+
+.lv-module-card {
+  padding: var(--lv-sp-lg);
+  border-radius: var(--lv-radius-lg);
+  background: var(--lv-bg-card);
+  border: 1px solid var(--lv-border);
+  transition: border-color 0.25s var(--lv-ease), box-shadow 0.25s var(--lv-ease);
+  position: relative;
+  overflow: hidden;
+  will-change: box-shadow;
+}
+/* Shimmer gradient accent — slides on hover (shimmer technique) */
+.lv-module-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--lv-accent) 25%,
+    var(--lv-highlight) 50%,
+    var(--lv-accent) 75%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.25s var(--lv-ease);
+}
+.lv-module-card:hover {
+  border-color: var(--lv-border-hover);
+  box-shadow: 0 4px 20px rgba(0 0 0 / 0.18),
+              0 0 0 1px rgba(99 102 241 / 0.08);
+}
+.lv-module-card:hover::before {
+  opacity: 1;
+  animation: lv-shimmer 2s ease-in-out forwards;
+}
+
+@keyframes lv-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.lv-module-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--lv-sp-sm);
+  margin-bottom: var(--lv-sp-md);
+}
+
+.lv-module-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(99 102 241 / 0.15), rgba(34 211 238 / 0.1));
+  border: 1px solid rgba(99 102 241 / 0.15);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s var(--lv-ease), box-shadow 0.4s var(--lv-ease);
+  position: relative;
+}
+.lv-module-card__icon::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(99 102 241 / 0.3), rgba(34 211 238 / 0.2));
+  opacity: 0;
+  z-index: -1;
+  filter: blur(6px);
+  transition: opacity 0.4s var(--lv-ease);
+}
+.lv-module-card:hover .lv-module-card__icon {
+  transform: scale(1.1) rotate(-3deg);
+  box-shadow: 0 0 16px rgba(99 102 241 / 0.2);
+}
+.lv-module-card:hover .lv-module-card__icon::after {
+  opacity: 1;
+}
+
+.lv-module-card__title {
+  font-size: var(--lv-fs-lg);
+  font-weight: 700;
+  color: var(--lv-text-primary);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.lv-module-card__desc {
+  font-size: var(--lv-fs-sm);
+  color: var(--lv-text-tertiary);
+  margin: 0 0 var(--lv-sp-md);
+  line-height: 1.65;
+}
+
+.lv-module-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--lv-fs-xs);
+  color: var(--lv-text-quaternary);
+  columns: 1;
+}
+.lv-module-card__list li {
+  padding: 3px 0 3px var(--lv-sp-md);
+  position: relative;
+  break-inside: avoid;
+}
+.lv-module-card__list li::before {
+  content: "›";
+  position: absolute;
+  left: 0;
+  color: var(--lv-accent);
+  font-weight: 800;
+  font-size: var(--lv-fs-sm);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ARCHITECTURE — System diagram storytelling
+   Purpose: "This is a real platform with serious architecture."
+   Visual: Topology-inspired cards. Node/connection visual language.
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Three.js Architecture Canvas ────────────────────── */
+.lv-arch-canvas {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  margin-bottom: var(--lv-sp-xl);
+  border-radius: var(--lv-radius-lg);
+  overflow: hidden;
+}
+.lv-arch-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.lv-arch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--lv-sp-lg);
+}
+
+.lv-arch-card {
+  padding: var(--lv-sp-lg) var(--lv-sp-lg) var(--lv-sp-lg);
+  border-radius: var(--lv-radius-lg);
+  background: rgba(255 255 255 / 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255 255 255 / 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s var(--lv-ease), box-shadow 0.3s var(--lv-ease);
+}
+.lv-arch-card:hover {
+  border-color: rgba(99 102 241 / 0.2);
+  box-shadow: 0 8px 32px rgba(0 0 0 / 0.15);
+}
+/* Subtle topology accent — top-left corner node */
+.lv-arch-card::after {
+  content: "";
+  position: absolute;
+  top: -1px; left: -1px;
+  width: 48px; height: 48px;
+  border-bottom: 1px solid var(--lv-accent-dim);
+  border-right: 1px solid var(--lv-accent-dim);
+  border-radius: 0 0 var(--lv-radius) 0;
+  pointer-events: none;
+}
+
+.lv-arch-card__title {
+  font-size: var(--lv-fs-lg);
+  font-weight: 700;
+  color: var(--lv-text-primary);
+  margin: 0 0 var(--lv-sp-sm);
+  letter-spacing: -0.01em;
+}
+
+.lv-arch-card__desc {
+  font-size: var(--lv-fs-sm);
+  color: var(--lv-text-tertiary);
+  margin: 0 0 var(--lv-sp-md);
+  line-height: 1.65;
+}
+
+.lv-arch-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--lv-fs-xs);
+  color: var(--lv-text-quaternary);
+}
+.lv-arch-card__list li {
+  padding: 4px 0 4px 22px;
+  position: relative;
+}
+.lv-arch-card__list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--lv-highlight);
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECURITY — Defence-in-Depth cards
+   Purpose: "Your data is safe. Full sovereignty."
+   Visual: Shield iconography. Layered card treatment.
+   ══════════════════════════════════════════════════════════ */
+#security {
+  position: relative;
+  overflow: hidden;
+  --lv-parallax-y: 0px;
+}
+#security::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(var(--lv-parallax-y));
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99 102 241 / 0.06) 0%, rgba(34 211 238 / 0.03) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: lv-sec-pulse 6s ease-in-out infinite alternate;
+}
+#security > * { position: relative; z-index: 1; }
+
+@keyframes lv-sec-pulse {
+  0%   { opacity: 0.6; transform: translate(-50%, -50%) translateY(var(--lv-parallax-y)) scale(1); }
+  100% { opacity: 1;   transform: translate(-50%, -50%) translateY(var(--lv-parallax-y)) scale(1.1); }
+}
+
+.lv-sec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--lv-sp-lg);
+}
+
+.lv-sec-card {
+  padding: var(--lv-sp-lg);
+  border-radius: var(--lv-radius-lg);
+  background: rgba(255 255 255 / 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255 255 255 / 0.06);
+  position: relative;
+  transition: border-color 0.3s var(--lv-ease), box-shadow 0.3s var(--lv-ease);
+}
+.lv-sec-card:hover {
+  border-color: rgba(99 102 241 / 0.2);
+  box-shadow: 0 8px 32px rgba(0 0 0 / 0.15);
+}
+/* Left security accent bar */
+.lv-sec-card::before {
+  content: "";
+  position: absolute;
+  top: var(--lv-sp-md); bottom: var(--lv-sp-md); left: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--lv-accent), var(--lv-highlight));
+  border-radius: 0 2px 2px 0;
+  opacity: 0.5;
+}
+
+.lv-sec-card__title {
+  font-size: var(--lv-fs-lg);
+  font-weight: 700;
+  color: var(--lv-text-primary);
+  margin: 0 0 var(--lv-sp-md);
+  padding-left: var(--lv-sp-md);
+}
+
+.lv-sec-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--lv-fs-xs);
+  color: var(--lv-text-tertiary);
+  padding-left: var(--lv-sp-md);
+}
+.lv-sec-card__list li {
+  padding: 4px 0 4px 20px;
+  position: relative;
+}
+.lv-sec-card__list li::before {
+  content: "◆";
+  position: absolute;
+  left: 0;
+  font-size: 0.5rem;
+  color: var(--lv-success);
+  top: 7px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TABLES — Tech Stack, Competitive, Platforms
+   ══════════════════════════════════════════════════════════ */
+.lv-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--lv-radius);
+  border: 1px solid var(--lv-border);
+}
+
+.lv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--lv-fs-sm);
+}
+
+.lv-table th,
+.lv-table td {
+  text-align: left;
+  padding: var(--lv-sp-md);
+  border-bottom: 1px solid var(--lv-border);
+}
+
+.lv-table th {
+  font-size: var(--lv-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lv-text-quaternary);
+  background: var(--lv-bg-raised);
+  position: sticky;
+  top: 0;
+}
+
+.lv-table td {
+  color: var(--lv-text-secondary);
+}
+
+.lv-table tbody tr {
+  transition: background 0.25s var(--lv-ease), transform 0.25s var(--lv-ease);
+}
+.lv-table tbody tr:hover {
+  background: rgba(255 255 255 / 0.03);
+  transform: translateX(4px);
+}
+.lv-table tbody tr:last-child td { border-bottom: none; }
+
+.lv-table__highlight {
+  color: var(--lv-highlight) !important;
+  font-weight: 700;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CODEBASE METRICS — Grid of trust-building numbers
+   Purpose: "This is a deeply-built product. 327K lines prove it."
+   Motion: Count-up animation prep (values get .lv-metric--animate)
+   ══════════════════════════════════════════════════════════ */
+.lv-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--lv-sp-md);
+}
+
+.lv-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--lv-sp-xs);
+  padding: var(--lv-sp-lg) var(--lv-sp-md);
+  border-radius: var(--lv-radius);
+  background: var(--lv-bg-card);
+  border: 1px solid var(--lv-border);
+  text-align: center;
+  transition: border-color 0.3s var(--lv-ease);
+}
+.lv-metric:hover {
+  border-color: var(--lv-border-accent);
+  box-shadow: 0 0 16px rgba(99 102 241 / 0.08);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.lv-metric__value {
+  font-size: var(--lv-fs-xl);
+  font-weight: 800;
+  color: var(--lv-text-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.lv-metric__label {
+  font-size: var(--lv-fs-xs);
+  color: var(--lv-text-quaternary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DEPLOYMENT MODEL — SaaS vs VChat comparison
+   ══════════════════════════════════════════════════════════ */
+.lv-deploy-model {
+  max-width: 680px;
+  margin: 0 auto var(--lv-sp-xl);
+  border-radius: var(--lv-radius);
+  border: 1px solid var(--lv-border);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 40px rgba(99 102 241 / 0.06);
+}
+
+/* VChat column subtle highlight stripe */
+.lv-deploy-model__vchat {
+  position: relative;
+}
+.lv-deploy-model__row:first-child .lv-deploy-model__vchat::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(180deg, var(--lv-accent), var(--lv-highlight));
+  opacity: 0.5;
+}
+
+.lv-deploy-model__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--lv-bg-raised);
+}
+
+.lv-deploy-model__col-label {
+  padding: var(--lv-sp-md) var(--lv-sp-lg);
+  font-size: var(--lv-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--lv-text-quaternary);
+  text-align: center;
+}
+.lv-deploy-model__col-label--vchat {
+  color: var(--lv-highlight);
+}
+
+.lv-deploy-model__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--lv-border);
+}
+
+.lv-deploy-model__saas,
+.lv-deploy-model__vchat {
+  padding: 10px var(--lv-sp-lg);
+  font-size: var(--lv-fs-sm);
+  text-align: center;
+}
+
+.lv-deploy-model__saas {
+  color: var(--lv-text-quaternary);
+}
+
+.lv-deploy-model__vchat {
+  color: var(--lv-highlight);
+  font-weight: 700;
+  background: var(--lv-highlight-dim);
+}
+
+.lv-deploy-model__tagline {
+  text-align: center;
+  font-size: var(--lv-fs-base);
+  font-weight: 800;
+  color: var(--lv-highlight);
+  margin-top: var(--lv-sp-md);
+  letter-spacing: 0.02em;
+}
+
+/* ══════════════════════════════════════════════════════════
+   IDEAL FOR — Industry segment cards
+   ══════════════════════════════════════════════════════════ */
+.lv-ideal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--lv-sp-lg);
+}
+
+.lv-ideal-card {
+  padding: var(--lv-sp-lg);
+  border-radius: var(--lv-radius-lg);
+  background: var(--lv-bg-card);
+  border: 1px solid var(--lv-border);
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--lv-sp-md);
+  transition: border-color 0.3s var(--lv-ease), box-shadow 0.3s var(--lv-ease);
+  position: relative;
+  overflow: hidden;
+}
+.lv-ideal-card::before {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99 102 241 / 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  transition: transform 0.5s var(--lv-ease), opacity 0.5s var(--lv-ease);
+  opacity: 0;
+}
+.lv-ideal-card:hover {
+  border-color: var(--lv-border-hover);
+  box-shadow: 0 4px 24px rgba(99 102 241 / 0.08);
+}
+.lv-ideal-card:hover::before {
+  opacity: 1;
+  transform: scale(1.8);
+}
+
+.lv-ideal-card__icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--lv-bg-raised);
+  border: 1px solid var(--lv-border);
+  transition: border-color 0.3s var(--lv-ease), background 0.3s var(--lv-ease);
+}
+.lv-ideal-card:hover .lv-ideal-card__icon {
+  border-color: var(--lv-accent-dim);
+  background: rgba(99 102 241 / 0.08);
+}
+
+.lv-ideal-card__title {
+  font-size: var(--lv-fs-base);
+  font-weight: 700;
+  color: var(--lv-text-primary);
+  margin: 0 0 var(--lv-sp-xs);
+}
+
+.lv-ideal-card__desc {
+  font-size: var(--lv-fs-sm);
+  color: var(--lv-text-tertiary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   COMPLIANCE — Checklist
+   ══════════════════════════════════════════════════════════ */
+.lv-compliance-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--lv-sp-sm);
+}
+
+.lv-compliance-list li {
+  padding: var(--lv-sp-md) var(--lv-sp-md) var(--lv-sp-md) 48px;
+  position: relative;
+  border-radius: var(--lv-radius-sm);
+  background: var(--lv-bg-card);
+  border: 1px solid var(--lv-border);
+  font-size: var(--lv-fs-sm);
+  color: var(--lv-text-secondary);
+  transition: border-color 0.3s var(--lv-ease), box-shadow 0.3s var(--lv-ease);
+}
+.lv-compliance-list li:hover {
+  border-color: var(--lv-border-hover);
+  box-shadow: 0 2px 12px rgba(34 197 94 / 0.08);
+}
+.lv-compliance-list li::before {
+  content: "✓";
+  position: absolute;
+  left: var(--lv-sp-md);
+  font-weight: 800;
+  color: var(--lv-success);
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(34 197 94 / 0.1);
+  font-size: var(--lv-fs-xs);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ══════════════════════════════════════════════════════════
+   ONE-LINER DESCRIPTIONS
+   ══════════════════════════════════════════════════════════ */
+.lv-oneliners {
+  border-bottom: none;
+}
+
+.lv-oneliner {
+  margin: 0 0 var(--lv-sp-md);
+  padding: var(--lv-sp-md) var(--lv-sp-lg);
+  border-left: 3px solid var(--lv-accent);
+  background: var(--lv-bg-card);
+  border-radius: 0 var(--lv-radius-sm) var(--lv-radius-sm) 0;
+}
+
+.lv-oneliner__label {
+  display: block;
+  font-size: var(--lv-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--lv-accent);
+  font-style: normal;
+  margin-bottom: var(--lv-sp-xs);
+}
+
+.lv-oneliner__text {
+  font-size: var(--lv-fs-sm);
+  color: var(--lv-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   FOOTER — Minimal. Enterprise-grade sign-off.
+   ══════════════════════════════════════════════════════════ */
+.lv-footer {
+  padding: var(--lv-sp-xl) 0;
+  text-align: center;
+  border-top: 1px solid var(--lv-border);
+}
+
+.lv-footer__tagline {
+  font-size: var(--lv-fs-sm);
+  color: var(--lv-text-tertiary);
+  margin: 0 0 var(--lv-sp-xs);
+}
+
+.lv-footer__tech {
+  font-size: var(--lv-fs-xs);
+  color: var(--lv-text-quaternary);
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile-first overrides
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .landing-vchat {
+    padding: 0 var(--lv-sp-md);
+  }
+
+  .lv-hero {
+    padding: var(--lv-sp-3xl) 0 var(--lv-sp-2xl);
+  }
+
+  .lv-hero__title {
+    font-size: var(--lv-fs-2xl);
+  }
+
+  .lv-section {
+    padding: var(--lv-sp-2xl) 0;
+  }
+
+  .lv-section-title {
+    font-size: var(--lv-fs-xl);
+  }
+
+  .lv-hero__stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--lv-sp-sm);
+  }
+
+  .lv-modules-grid,
+  .lv-arch-grid,
+  .lv-sec-grid,
+  .lv-ideal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lv-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lv-compliance-list {
+    grid-template-columns: 1fr;
+  }
+
+  .lv-ideal-card {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .lv-hero__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lv-hero__ctas {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lv-btn { width: 100%; max-width: 280px; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   ACCESSIBILITY — prefers-reduced-motion
+   Disable ALL motion for users who opt out.
+   ══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Focus-visible — keyboard navigation ──────────────── */
+.lv-btn:focus-visible {
+  outline: 2px solid var(--lv-accent);
+  outline-offset: 3px;
+}
+
+.lv-module-card:focus-visible,
+.lv-arch-card:focus-visible,
+.lv-sec-card:focus-visible,
+.lv-ideal-card:focus-visible,
+.lv-stat:focus-visible,
+.lv-metric:focus-visible {
+  outline: 2px solid var(--lv-accent);
+  outline-offset: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOPOLOGY GRID — Hero background pattern
+   Subtle dot-grid evoking system architecture / node maps.
+   Uses CSS radial-gradient — zero images, zero JS.
+   ══════════════════════════════════════════════════════════ */
+.lv-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle 1px, rgba(99 102 241 / 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 50% at 50% 40%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 40%, black 20%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION CONNECTOR — Architecture node visual language
+   Thin vertical line connecting sections (topology motif).
+   ══════════════════════════════════════════════════════════ */
+.lv-connector {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  border: none;
+}
+
+.lv-connector__line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(
+    180deg,
+    var(--lv-border) 0%,
+    var(--lv-accent-dim) 50%,
+    var(--lv-border) 100%
+  );
+  position: relative;
+}
+
+/* Attention-seeking pulse on connector node */
+.lv-connector__line::before {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lv-accent);
+  opacity: 0.5;
+  animation: lv-node-pulse 2.5s ease-in-out infinite;
+}
+
+/* Connector top node */
+.lv-connector__line::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lv-highlight);
+  opacity: 0.3;
+}
+
+@keyframes lv-node-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.8; transform: scale(1.6); box-shadow: 0 0 8px rgba(99 102 241 / 0.3); }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PREMIUM FINISHING — Hero title gradient text
+   Subtle gradient from white → light blue on the headline.
+   ══════════════════════════════════════════════════════════ */
+.lv-hero__title {
+  background: linear-gradient(135deg, var(--lv-text-primary) 60%, var(--lv-highlight) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Module card list: 2-column for wide cards ────────── */
+@media (min-width: 769px) {
+  .lv-module-card__list {
+    columns: 2;
+    column-gap: var(--lv-sp-lg);
+  }
+}
+
+/* ── Table rows: alternating subtle stripes ───────────── */
+.lv-table tbody tr:nth-child(even) {
+  background: rgba(255 255 255 / 0.012);
+}
+.lv-table tbody tr:nth-child(even):hover {
+  background: rgba(255 255 255 / 0.03);
+}
+
+/* ── Smooth scroll for anchor links ───────────────────── */
+.vr-res-root.landing-vchat-root {
+  scroll-behavior: smooth;
+}
+
+/* ── Selection color ──────────────────────────────────── */
+.vr-res-root.landing-vchat-root ::selection {
+  background: rgba(99 102 241 / 0.3);
+  color: var(--lv-text-primary);
+}
+
+/* ── Deploy model: row label emphasis ─────────────────── */
+.lv-deploy-model__row:first-child .lv-deploy-model__vchat {
+  border-radius: 0;
+}
+
+/* ── Metric value: highlight color on hover ───────────── */
+.lv-metric:hover .lv-metric__value {
+  color: var(--lv-highlight);
+  transition: color 0.3s var(--lv-ease);
+}
+
+/* ── Footer: subtle top glow ──────────────────────────── */
+.lv-footer::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin: 0 auto var(--lv-sp-xl);
+  max-width: 200px;
+  background: linear-gradient(90deg, transparent, var(--lv-accent-dim), transparent);
+}
