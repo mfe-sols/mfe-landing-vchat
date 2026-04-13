@@ -705,11 +705,10 @@
 }
 
 .lv-table tbody tr {
-  transition: background 0.25s var(--lv-ease), transform 0.25s var(--lv-ease);
+  transition: background 0.25s var(--lv-ease);
 }
 .lv-table tbody tr:hover {
   background: rgba(255 255 255 / 0.03);
-  transform: translateX(4px);
 }
 .lv-table tbody tr:last-child td { border-bottom: none; }
 
