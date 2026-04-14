@@ -365,6 +365,7 @@
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: var(--lv-sp-lg);
   position: relative;
+  overflow: hidden;
 }
 @media (hover: hover) {
   .lv-modules-grid { perspective: 1200px; }

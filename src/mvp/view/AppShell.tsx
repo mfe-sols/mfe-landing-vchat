@@ -297,43 +297,46 @@ function useGsapMotion() {
           },
         );
 
-        /* ── Card 3D tilt on hover ──────────────────── */
-        root.querySelectorAll<HTMLElement>(".lv-module-card, .lv-arch-card").forEach((card) => {
-          const onMove = (e: MouseEvent) => {
-            const rect = card.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            gsap.to(card, { rotateY: x * 6, rotateX: -y * 6, duration: 0.4, ease: "power2.out", overwrite: true });
-          };
-          const onLeave = () => {
-            gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.6, ease: "elastic.out(1, 0.5)", overwrite: true });
-          };
-          card.addEventListener("mousemove", onMove);
-          card.addEventListener("mouseleave", onLeave);
-          cleanups.push(() => {
-            card.removeEventListener("mousemove", onMove);
-            card.removeEventListener("mouseleave", onLeave);
+        /* ── Card 3D tilt on hover (desktop only) ──── */
+        const canHover = window.matchMedia("(hover: hover)").matches;
+        if (canHover) {
+          root.querySelectorAll<HTMLElement>(".lv-module-card, .lv-arch-card").forEach((card) => {
+            const onMove = (e: MouseEvent) => {
+              const rect = card.getBoundingClientRect();
+              const x = (e.clientX - rect.left) / rect.width - 0.5;
+              const y = (e.clientY - rect.top) / rect.height - 0.5;
+              gsap.to(card, { rotateY: x * 6, rotateX: -y * 6, duration: 0.4, ease: "power2.out", overwrite: true });
+            };
+            const onLeave = () => {
+              gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.6, ease: "elastic.out(1, 0.5)", overwrite: true });
+            };
+            card.addEventListener("mousemove", onMove);
+            card.addEventListener("mouseleave", onLeave);
+            cleanups.push(() => {
+              card.removeEventListener("mousemove", onMove);
+              card.removeEventListener("mouseleave", onLeave);
+            });
           });
-        });
 
-        /* ── Cursor spotlight on module grid ───────── */
-        const grid = root.querySelector<HTMLElement>(".lv-modules-grid");
-        if (grid) {
-          const onGridMove = (e: MouseEvent) => {
-            const rect = grid.getBoundingClientRect();
-            grid.style.setProperty("--lv-spotlight-x", `${e.clientX - rect.left}px`);
-            grid.style.setProperty("--lv-spotlight-y", `${e.clientY - rect.top}px`);
-          };
-          const onGridLeave = () => {
-            grid.style.setProperty("--lv-spotlight-x", "-9999px");
-            grid.style.setProperty("--lv-spotlight-y", "-9999px");
-          };
-          grid.addEventListener("mousemove", onGridMove, { passive: true });
-          grid.addEventListener("mouseleave", onGridLeave);
-          cleanups.push(() => {
-            grid.removeEventListener("mousemove", onGridMove);
-            grid.removeEventListener("mouseleave", onGridLeave);
-          });
+          /* ── Cursor spotlight on module grid ───────── */
+          const grid = root.querySelector<HTMLElement>(".lv-modules-grid");
+          if (grid) {
+            const onGridMove = (e: MouseEvent) => {
+              const rect = grid.getBoundingClientRect();
+              grid.style.setProperty("--lv-spotlight-x", `${e.clientX - rect.left}px`);
+              grid.style.setProperty("--lv-spotlight-y", `${e.clientY - rect.top}px`);
+            };
+            const onGridLeave = () => {
+              grid.style.setProperty("--lv-spotlight-x", "-9999px");
+              grid.style.setProperty("--lv-spotlight-y", "-9999px");
+            };
+            grid.addEventListener("mousemove", onGridMove, { passive: true });
+            grid.addEventListener("mouseleave", onGridLeave);
+            cleanups.push(() => {
+              grid.removeEventListener("mousemove", onGridMove);
+              grid.removeEventListener("mouseleave", onGridLeave);
+            });
+          }
         }
       });
     }, root);
