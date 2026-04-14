@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -376,6 +376,114 @@ const ChapterDivider = ({
   </div>
 );
 
+/* ── Side navigation items ────────────────────────────── */
+const NAV_ITEMS: { id: string; label: string; chapter?: number }[] = [
+  { id: "hero", label: "Trang đầu" },
+  { id: "overview", label: "Vì sao", chapter: 1 },
+  { id: "modules", label: "Tính năng", chapter: 2 },
+  { id: "architecture", label: "Kiến trúc", chapter: 3 },
+  { id: "security", label: "Bảo mật" },
+  { id: "compliance", label: "Tuân thủ" },
+  { id: "deployment", label: "Triển khai", chapter: 4 },
+  { id: "competitive", label: "So sánh" },
+  { id: "platforms", label: "Nền tảng" },
+  { id: "ideal", label: "Dành cho", chapter: 5 },
+  { id: "cta", label: "Liên hệ" },
+];
+
+/* ── Scroll-spy hook — tracks active section via ScrollTrigger ── */
+function useScrollSpy() {
+  const [active, setActive] = useState("hero");
+
+  useEffect(() => {
+    const triggers: ScrollTrigger[] = [];
+
+    NAV_ITEMS.forEach(({ id }) => {
+      const el =
+        id === "hero"
+          ? document.querySelector<HTMLElement>(".lv-hero")
+          : id === "cta"
+            ? document.querySelector<HTMLElement>(".lv-cta")
+            : document.getElementById(id);
+      if (!el) return;
+
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: el,
+          start: "top 50%",
+          end: "bottom 50%",
+          onToggle: (self) => {
+            if (self.isActive) setActive(id);
+          },
+        }),
+      );
+    });
+
+    return () => triggers.forEach((t) => t.kill());
+  }, []);
+
+  return active;
+}
+
+/* ── SideNav — vertical dot navigation ─────────────────── */
+function SideNav() {
+  const active = useScrollSpy();
+  const [visible, setVisible] = useState(false);
+
+  /* Show after scrolling past hero */
+  useEffect(() => {
+    const trigger = ScrollTrigger.create({
+      trigger: ".lv-hero",
+      start: "bottom 80%",
+      onEnterBack: () => setVisible(false),
+      onLeave: () => setVisible(true),
+    });
+    return () => trigger.kill();
+  }, []);
+
+  const scrollTo = useCallback((id: string) => {
+    const el =
+      id === "hero"
+        ? document.querySelector<HTMLElement>(".lv-hero")
+        : id === "cta"
+          ? document.querySelector<HTMLElement>(".lv-cta")
+          : document.getElementById(id);
+    if (el) {
+      gsap.to(window, {
+        duration: 1,
+        scrollTo: { y: el, offsetY: 40 },
+        ease: "power3.inOut",
+      });
+    }
+  }, []);
+
+  return (
+    <nav
+      className={`lv-sidenav ${visible ? "lv-sidenav--visible" : ""}`}
+      aria-label="Section navigation"
+    >
+      <div className="lv-sidenav__track" aria-hidden="true" />
+      {NAV_ITEMS.map(({ id, label, chapter }) => (
+        <button
+          key={id}
+          className={`lv-sidenav__item ${active === id ? "lv-sidenav__item--active" : ""}`}
+          onClick={() => scrollTo(id)}
+          aria-label={label}
+          aria-current={active === id ? "true" : undefined}
+          type="button"
+        >
+          <span className="lv-sidenav__dot">
+            {chapter != null && (
+              <span className="lv-sidenav__chapter">{chapter}</span>
+            )}
+          </span>
+          <span className="lv-sidenav__label">{label}</span>
+        </button>
+      ))}
+    </nav>
+  );
+}
+
 /* ── Section helper ───────────────────────────────────── */
 const Section = ({
   id,
@@ -419,6 +527,8 @@ export function AppShell({ locale }: { locale?: string }) {
 
   return (
     <div className="landing-vchat" ref={rootRef}>
+      <SideNav />
+
       {/* ── HERO ────────────────────────────────────── */}
       <header className="lv-hero">        <HeroCanvas />        <p className="lv-hero__eyebrow">{vm.heroEyebrow}</p>
         <h1 className="lv-hero__title">{vm.heroTitle}</h1>
