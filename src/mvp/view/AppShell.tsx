@@ -379,6 +379,106 @@ const ChapterDivider = ({
   </div>
 );
 
+const INTRO_VIDEO_SRC = "/intro.mp4";
+
+function VideoModal({
+  isOpen,
+  onClose,
+  title,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!isOpen || typeof window === "undefined") return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    closeButtonRef.current?.focus();
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isOpen) {
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => undefined);
+      }
+      return;
+    }
+
+    video.pause();
+    video.currentTime = 0;
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="lv-video-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lv-video-modal-title"
+      onClick={onClose}
+    >
+      <div
+        className="lv-video-modal__dialog"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="lv-video-modal__header">
+          <div>
+            <p className="lv-video-modal__eyebrow">Live product walkthrough</p>
+            <h3 id="lv-video-modal-title" className="lv-video-modal__title">
+              {title}
+            </h3>
+          </div>
+          <button
+            ref={closeButtonRef}
+            type="button"
+            className="lv-video-modal__close"
+            aria-label="Close demo video"
+            onClick={onClose}
+          >
+            <span className="lv-video-modal__close-icon" aria-hidden="true">
+              <span className="lv-video-modal__close-line lv-video-modal__close-line--a" />
+              <span className="lv-video-modal__close-line lv-video-modal__close-line--b" />
+            </span>
+          </button>
+        </div>
+
+        <div className="lv-video-modal__frame">
+          <video
+            ref={videoRef}
+            className="lv-video-modal__video"
+            src={INTRO_VIDEO_SRC}
+            controls
+            autoPlay
+            playsInline
+            preload="metadata"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Side navigation items ────────────────────────────── */
 const NAV_ITEMS: { id: string; label: string; chapter?: number }[] = [
   { id: "hero", label: "Trang đầu" },
@@ -527,6 +627,7 @@ export function AppShell({ locale }: { locale?: string }) {
     [locale],
   );
   const rootRef = useGsapMotion();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   return (
     <div className="landing-vchat" ref={rootRef}>
@@ -785,9 +886,13 @@ export function AppShell({ locale }: { locale?: string }) {
           <a href="#" className="lv-btn lv-btn--primary lv-btn--lg lv-btn--glow">
             {vm.ctaPrimary}
           </a>
-          <a href="#" className="lv-btn lv-btn--ghost lv-btn--lg">
+          <button
+            type="button"
+            className="lv-btn lv-btn--ghost lv-btn--lg lv-btn--demo"
+            onClick={() => setIsVideoModalOpen(true)}
+          >
             {vm.ctaSecondary}
-          </a>
+          </button>
         </div>
       </section>
 
@@ -796,6 +901,12 @@ export function AppShell({ locale }: { locale?: string }) {
         <p className="lv-footer__tagline">{vm.footerTagline}</p>
         <p className="lv-footer__tech">{vm.footerTech}</p>
       </footer>
+
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        title={vm.ctaSecondary}
+      />
     </div>
   );
 }
