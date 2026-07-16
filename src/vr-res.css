@@ -1952,3 +1952,8 @@
   z-index: 0;
   transition: opacity 0.3s var(--lv-ease);
 }
+
+/* Footer: điều hướng site + pháp lý (yêu cầu review AdSense/SEO) */
+.lv-footer__links { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.lv-footer__links a { color: inherit; opacity: 0.75; font-size: 13px; text-decoration: none; }
+.lv-footer__links a:hover { opacity: 1; text-decoration: underline; }

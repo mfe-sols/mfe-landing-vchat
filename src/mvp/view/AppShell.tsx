@@ -900,6 +900,13 @@ export function AppShell({ locale }: { locale?: string }) {
       <footer className="lv-footer">
         <p className="lv-footer__tagline">{vm.footerTagline}</p>
         <p className="lv-footer__tech">{vm.footerTech}</p>
+        {/* Điều hướng site + pháp lý — cần cho khách LẪN reviewer (AdSense/SEO):
+            apex phải dẫn được tới nội dung chính và Điều khoản/Chính sách. */}
+        <nav className="lv-footer__links" aria-label="Site">
+          <a href="https://app.vopenworld.com">Vtourist — Mạng xã hội du lịch 360°</a>
+          <a href="https://app.vopenworld.com/auth/terms">Điều khoản dịch vụ</a>
+          <a href="https://app.vopenworld.com/auth/privacy">Chính sách bảo mật</a>
+        </nav>
       </footer>
 
       <VideoModal
