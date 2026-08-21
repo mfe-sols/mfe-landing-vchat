@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-# Nội dung chính của nền tảng nằm ở app.vopenworld.com (Vtourist).
+# Nội dung chính của nền tảng nằm ở app.vopenworld.com (VRtourist).
 Sitemap: https://vopenworld.com/sitemap.xml
